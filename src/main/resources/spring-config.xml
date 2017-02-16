@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
+
+  <!-- Default bean pageName is 'mongo' -->
+  <mongo:mongo id="mongo" host="localhost" port="27017"/>
+  <!--<mongo:mongo id="mongo" host="52.175.27.73" port="27017"/>-->
+
+  <bean id="facebookPostsTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+    <constructor-arg ref="mongo"/>
+    <constructor-arg name="databaseName" value="facebookPosts"/>
+  </bean>
+
+  <bean id="facebookNewsTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+    <constructor-arg ref="mongo"/>
+    <constructor-arg name="databaseName" value="news7"/>
+  </bean>
+
+  <bean id="newsTagDict" class="org.springframework.data.mongodb.core.MongoTemplate">
+    <constructor-arg ref="mongo"/>
+    <constructor-arg name="databaseName" value="newsTagsDict"/>
+  </bean>
+
+  <mongo:repositories base-package="shared.mongodb.repo.FacebookPostsRepo" mongo-template-ref="facebookPostsTemplate"/>
+  <mongo:repositories base-package="shared.mongodb.repo.NewsRepo" mongo-template-ref="facebookNewsTemplate"/>
+  <mongo:repositories base-package="shared.mongodb.repo.NewsTag" mongo-template-ref="newsTagDict"/>
+
+</beans>
